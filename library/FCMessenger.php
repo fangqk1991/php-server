@@ -2,6 +2,8 @@
 
 namespace FC\Server;
 
+use Redis;
+
 class FCMessenger
 {
     private $_redisDB;
@@ -9,8 +11,9 @@ class FCMessenger
 
     public function __construct($host, $port)
     {
-        $this->_redisDB = new \Redis();
+        $this->_redisDB = new Redis();
         $this->_redisDB->connect($host, $port);
+        $this->_redisDB->setOption(Redis::OPT_READ_TIMEOUT, -1);
     }
 
     private function _send_api($api)
@@ -56,7 +59,7 @@ class FCMessenger
         $this->_redisDB->set($sessionID, $content);
         $this->_redisDB->expire($sessionID, 60);
         $this->_redisDB->rPush($this->_send_api($api), $sessionID);
-        if($waiting)
+        if(!$waiting)
             return NULL;
         return $this->_inner_wait_for_message($this->_send_api($sessionID), $timeout);
     }
