@@ -1,0 +1,19 @@
+{
+  "name": "fang/php-server",
+  "description": "php server base on redis",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "fangqk1991",
+      "email": "me@fangqk.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {"FC\\Server\\": "library/"}
+  },
+  "require": {
+    "ext-redis": "*"
+  }
+}
