@@ -3,6 +3,7 @@
 
 ### 设计说明
 * [基于 Redis 的应用间通信](https://fqk.io/app-to-app-communication/)
+* [基于 Redis 的「服务器」实现](https://fqk.io/server-base-on-redis/)
 
 ### 其他版本
 * [Python 版](https://github.com/fangqk1991/py-server)
