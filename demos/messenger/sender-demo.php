@@ -11,11 +11,11 @@ $port = 6379;
 $times = 0;
 $sender = new FCMessenger($host, $port);
 
-$response = $sender->send_message('test', 'Hello.');
+$response = $sender->sendMessage('test', 'Hello.');
 echo sprintf("[Client] Received response: %s\n", $response);
 
-$response = $sender->send_message('test', 'Nice to meet you.');
+$response = $sender->sendMessage('test', 'Nice to meet you.');
 echo sprintf("[Client] Received response: %s\n", $response);
 
-$response = $sender->send_message('test', 'Bye.');
+$response = $sender->sendMessage('test', 'Bye.');
 echo sprintf("[Client] Received response: %s\n", $response);

@@ -14,11 +14,11 @@ $receiver = new FCMessenger($host, $port);
 echo "[Receiver] Waiting message...\n";
 while(true)
 {
-    $msg = $receiver->wait_for_message('test', 0, FALSE);
+    $msg = $receiver->waitForMessage('test', 0, FALSE);
     $times += 1;
 
     echo sprintf("[Receiver] Received message: %s\n", $msg);
-    $receiver->send_receipt(sprintf('Times: %d', $times));
+    $receiver->sendReceipt(sprintf('Times: %d', $times));
 
     if($msg === 'Bye.')
     {

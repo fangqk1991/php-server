@@ -16,17 +16,17 @@ class FCMessenger
         $this->_redisDB->setOption(Redis::OPT_READ_TIMEOUT, -1);
     }
 
-    private function _send_api($api)
+    private function _sendAPI($api)
     {
         return sprintf('fc:messenger:api:%s', $api);
     }
 
-    private function _generate_session_id()
+    private function _generateSessionID()
     {
         return sprintf('fc:messenger:session:id:%s', uniqid());
     }
 
-    private function _inner_wait_for_message($api, $timeout=10)
+    private function _innerWaitForMessage($api, $timeout=10)
     {
         $item = $this->_redisDB->blPop([$api], $timeout);
         if($item)
@@ -34,33 +34,33 @@ class FCMessenger
         return NULL;
     }
 
-    public function wait_for_message($api, $timeout=10, $receipt=TRUE)
+    public function waitForMessage($api, $timeout=10, $receipt=TRUE)
     {
-        $uid = $this->_inner_wait_for_message($this->_send_api($api), $timeout);
+        $uid = $this->_innerWaitForMessage($this->_sendAPI($api), $timeout);
         $content = $this->_redisDB->get($uid);
         $this->_sessionID = $uid;
         if($receipt)
-            $this->send_receipt('OK');
+            $this->sendReceipt('OK');
         return $content;
     }
 
-    public function send_receipt($content)
+    public function sendReceipt($content)
     {
         if($this->_sessionID)
         {
-            $this->_redisDB->rPush($this->_send_api($this->_sessionID), $content);
+            $this->_redisDB->rPush($this->_sendAPI($this->_sessionID), $content);
             $this->_sessionID = NULL;
         }
     }
 
-    public function send_message($api, $content, $waiting=True, $timeout=10)
+    public function sendMessage($api, $content, $waiting=True, $timeout=10)
     {
-        $sessionID = $this->_generate_session_id();
+        $sessionID = $this->_generateSessionID();
         $this->_redisDB->set($sessionID, $content);
         $this->_redisDB->expire($sessionID, 60);
-        $this->_redisDB->rPush($this->_send_api($api), $sessionID);
+        $this->_redisDB->rPush($this->_sendAPI($api), $sessionID);
         if(!$waiting)
             return NULL;
-        return $this->_inner_wait_for_message($this->_send_api($sessionID), $timeout);
+        return $this->_innerWaitForMessage($this->_sendAPI($sessionID), $timeout);
     }
 }
