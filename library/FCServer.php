@@ -8,7 +8,7 @@ abstract class FCServer
 {
     private $_host;
     private $_port;
-    private $_name;
+    private $_domain;
 
     protected $asyncMode = FALSE;
     protected $api;
@@ -18,11 +18,11 @@ abstract class FCServer
      */
     abstract protected function routerMap();
 
-    public function init($host, $port, $name)
+    public function init($host, $port, $domain)
     {
         $this->_host = $host;
         $this->_port = $port;
-        $this->_name = $name;
+        $this->_domain = $domain;
     }
 
     public function request($reqApi, $params=[], $waiting=TRUE, $timeout=10)
@@ -37,11 +37,11 @@ abstract class FCServer
         $messenger = new FCMessenger($this->_host, $this->_port);
         if(!$waiting)
         {
-            $messenger->sendMessage($this->_name, json_encode($params), FALSE);
+            $messenger->sendMessage($this->_domain, json_encode($params), FALSE);
             return NULL;
         }
 
-        $response = $messenger->sendMessage($this->_name, json_encode($params), TRUE, $timeout);
+        $response = $messenger->sendMessage($this->_domain, json_encode($params), TRUE, $timeout);
         $response = json_decode($response, TRUE);
         if(isset($response['data']))
         {
@@ -55,7 +55,7 @@ abstract class FCServer
     public function listen()
     {
         $context = new FCMessenger($this->_host, $this->_port);
-        $content = $context->waitForMessage($this->_name, 0, FALSE);
+        $content = $context->waitForMessage($this->_domain, 0, FALSE);
         $params = json_decode($content, TRUE);
         if(!is_array($params) || !isset($params['fc_server_request_api']))
         {
