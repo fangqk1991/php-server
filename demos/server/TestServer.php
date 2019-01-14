@@ -15,7 +15,7 @@ class TestServer extends FCServer
 {
     public function __construct()
     {
-        $this->init(HOST, PORT, TEST_API);
+        $this->init(HOST, PORT, 'SOME-SERVER-NAME');
     }
 
     public function fc_test(FCMessenger $context, $params)
