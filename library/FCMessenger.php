@@ -8,7 +8,7 @@ class FCMessenger
 {
     private $_redisDB;
     private $_sessionID;
-    public $defaultSessionTime;
+    public $defaultSessionTime = 600;
 
     public function __construct($host, $port)
     {

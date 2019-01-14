@@ -4,7 +4,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use FC\Server\FCMessenger;
 
-
 $host = '127.0.0.1';
 $port = 6379;
 
