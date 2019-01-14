@@ -8,6 +8,7 @@ class FCMessenger
 {
     private $_redisDB;
     private $_sessionID;
+    public $defaultSessionTime;
 
     public function __construct($host, $port)
     {
@@ -57,7 +58,7 @@ class FCMessenger
     {
         $sessionID = $this->_generateSessionID();
         $this->_redisDB->set($sessionID, $content);
-        $this->_redisDB->expire($sessionID, 60);
+        $this->_redisDB->expire($sessionID, $this->defaultSessionTime);
         $this->_redisDB->rPush($this->_sendAPI($api), $sessionID);
         if(!$waiting)
             return NULL;
